@@ -5,7 +5,7 @@ import { PlantDetails } from "@/components/PlantDetails";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { plantsDatabase, searchPlants, Plant } from "@/data/plantsData";
+import { allPlantsDatabase, searchPlants, Plant, getTotalPlantCount, getVerifiedPlantCount } from "@/data/plantsData";
 import { Leaf, Search, BookOpen, Info } from "lucide-react";
 import heroImage from "@/assets/hero-botanical.jpg";
 import { toast } from "sonner";
@@ -18,13 +18,16 @@ const Index = () => {
 
   const filteredPlants = searchQuery
     ? searchPlants(searchQuery)
-    : plantsDatabase;
+    : allPlantsDatabase;
+  
+  const totalPlants = getTotalPlantCount();
+  const verifiedPlants = getVerifiedPlantCount();
 
   const handleImageCapture = (imageData: string) => {
     // In production, this would call an ML model API to identify the plant
     // For now, we'll simulate identification after a delay
     setTimeout(() => {
-      const randomPlant = plantsDatabase[Math.floor(Math.random() * plantsDatabase.length)];
+      const randomPlant = allPlantsDatabase[Math.floor(Math.random() * allPlantsDatabase.length)];
       setSelectedPlant(randomPlant);
       setShowScanner(false);
       setShowDetails(true);
@@ -116,7 +119,16 @@ const Index = () => {
       {/* Database Section */}
       <section id="database" className="py-12 px-4 max-w-7xl mx-auto">
         <div className="mb-8">
-          <h2 className="text-3xl font-bold mb-4 text-primary">Plant Database</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-3xl font-bold text-primary">Plant Database</h2>
+            <div className="text-sm text-muted-foreground">
+              <span className="font-semibold text-primary">{totalPlants}</span> plants total
+              <span className="mx-2">•</span>
+              <span className="font-semibold text-accent">{verifiedPlants}</span> verified
+              <span className="mx-2">•</span>
+              <span className="font-semibold text-muted-foreground">{totalPlants - verifiedPlants}</span> test data
+            </div>
+          </div>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
@@ -169,12 +181,20 @@ const Index = () => {
 
       {/* Footer */}
       <footer className="bg-primary text-primary-foreground py-8 mt-12">
-        <div className="max-w-7xl mx-auto px-4 text-center">
+        <div className="max-w-7xl mx-auto px-4 text-center space-y-4">
+          <div className="bg-destructive/20 border border-destructive/50 rounded-lg p-4 max-w-3xl mx-auto">
+            <p className="text-sm font-semibold mb-2">⚠️ IMPORTANT DISCLAIMER</p>
+            <p className="text-xs">
+              This database contains {verifiedPlants} verified Ayurvedic plants and {totalPlants - verifiedPlants} AI-generated 
+              placeholder entries for testing purposes only. Plants beyond the first 3 have NOT been medically verified.
+              DO NOT use this information for medical treatment without consulting a qualified Ayurvedic practitioner.
+            </p>
+          </div>
           <p className="text-sm">
             This app provides information for educational purposes only. Always consult
             with a qualified Ayurvedic practitioner before using any medicinal plants.
           </p>
-          <p className="text-xs mt-4 opacity-80">
+          <p className="text-xs opacity-80">
             © 2025 Ayurvedic Plant Database. Built with ancient wisdom and modern technology.
           </p>
         </div>

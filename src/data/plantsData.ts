@@ -1,5 +1,6 @@
-// Sample Ayurvedic plant database
-// In production, this would be a comprehensive database with all plants
+// Ayurvedic plant database
+// WARNING: Plants beyond the first 3 are AI-GENERATED PLACEHOLDERS for testing only
+// DO NOT USE for actual medical/botanical purposes without verification
 
 export interface Plant {
   id: string;
@@ -450,10 +451,17 @@ export const plantsDatabase: Plant[] = [
   },
 ];
 
+// Import generated test data
+import { generatedPlants } from "./generatePlants";
+
+// Combine verified plants with generated test data
+// First 3 plants are verified, rest are AI-generated for testing
+export const allPlantsDatabase: Plant[] = [...plantsDatabase, ...generatedPlants];
+
 // Function to search plants
 export const searchPlants = (query: string): Plant[] => {
   const lowerQuery = query.toLowerCase();
-  return plantsDatabase.filter(
+  return allPlantsDatabase.filter(
     (plant) =>
       plant.sanskritName.toLowerCase().includes(lowerQuery) ||
       plant.botanicalName.toLowerCase().includes(lowerQuery) ||
@@ -464,5 +472,9 @@ export const searchPlants = (query: string): Plant[] => {
 
 // Function to get plant by ID
 export const getPlantById = (id: string): Plant | undefined => {
-  return plantsDatabase.find((plant) => plant.id === id);
+  return allPlantsDatabase.find((plant) => plant.id === id);
 };
+
+// Get total count
+export const getTotalPlantCount = () => allPlantsDatabase.length;
+export const getVerifiedPlantCount = () => plantsDatabase.length;
