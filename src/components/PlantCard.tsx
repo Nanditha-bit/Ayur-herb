@@ -5,6 +5,7 @@ import { Leaf } from "lucide-react";
 interface PlantCardProps {
   plant: {
     id: string;
+    imageUrl?: string;
     sanskritName: string;
     botanicalName: string;
     vernacularName: string;
@@ -17,9 +18,18 @@ interface PlantCardProps {
 export const PlantCard = ({ plant, onClick }: PlantCardProps) => {
   return (
     <Card
-      className="cursor-pointer hover:shadow-medium transition-all duration-300 hover:-translate-y-1"
+      className="cursor-pointer hover:shadow-medium transition-all duration-300 hover:-translate-y-1 overflow-hidden"
       onClick={onClick}
     >
+      {plant.imageUrl && (
+        <div className="w-full h-48 overflow-hidden">
+          <img
+            src={plant.imageUrl}
+            alt={plant.sanskritName}
+            className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+          />
+        </div>
+      )}
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex-1">

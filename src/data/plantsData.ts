@@ -2,8 +2,13 @@
 // WARNING: Plants beyond the first 3 are AI-GENERATED PLACEHOLDERS for testing only
 // DO NOT USE for actual medical/botanical purposes without verification
 
+import ashwagandhaImg from "@/assets/plants/ashwagandha.jpg";
+import tulsiImg from "@/assets/plants/tulsi.jpg";
+import neemImg from "@/assets/plants/neem.jpg";
+
 export interface Plant {
   id: string;
+  imageUrl?: string;
   sanskritName: string;
   synonyms: { name: string; meaning: string }[];
   botanicalName: string;
@@ -70,6 +75,7 @@ export interface Plant {
 export const plantsDatabase: Plant[] = [
   {
     id: "ashwagandha",
+    imageUrl: ashwagandhaImg,
     sanskritName: "अश्वगन्धा (Ashwagandha)",
     synonyms: [
       { name: "Varaha Karni", meaning: "Leaves resembling horse's ear" },
@@ -197,6 +203,7 @@ export const plantsDatabase: Plant[] = [
   },
   {
     id: "tulsi",
+    imageUrl: tulsiImg,
     sanskritName: "तुलसी (Tulsi)",
     synonyms: [
       { name: "Surasa", meaning: "Very juicy" },
@@ -324,6 +331,7 @@ export const plantsDatabase: Plant[] = [
   },
   {
     id: "neem",
+    imageUrl: neemImg,
     sanskritName: "निम्ब (Nimba)",
     synonyms: [
       { name: "Arishta", meaning: "Reliever of disease" },

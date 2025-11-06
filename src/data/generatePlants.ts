@@ -84,6 +84,7 @@ function generatePlant(index: number): Plant {
   
   return {
     id: `plant-${plantNumber}`,
+    imageUrl: `https://images.unsplash.com/photo-${1500000000000 + index}?auto=format&fit=crop&w=800&q=80`,
     sanskritName: `${sanskritName}`,
     synonyms: [
       { name: `Synonym1-${plantNumber}`, meaning: `Descriptive meaning for plant ${plantNumber}` },

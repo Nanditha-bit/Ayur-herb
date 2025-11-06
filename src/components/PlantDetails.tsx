@@ -14,6 +14,17 @@ export const PlantDetails = ({ plant }: PlantDetailsProps) => {
   return (
     <ScrollArea className="h-[calc(100vh-200px)]">
       <div className="space-y-6 p-6">
+        {/* Plant Image */}
+        {plant.imageUrl && (
+          <div className="w-full h-64 rounded-lg overflow-hidden">
+            <img
+              src={plant.imageUrl}
+              alt={plant.sanskritName}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        )}
+        
         {/* Header Section */}
         <div className="space-y-4">
           <div className="flex items-start justify-between">
