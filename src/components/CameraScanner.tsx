@@ -3,6 +3,8 @@ import { Camera, Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
+import { Capacitor } from "@capacitor/core";
+import { useCamera } from "@/hooks/useCamera";
 
 interface CameraScannerProps {
   onImageCapture: (imageData: string) => void;
@@ -14,8 +16,22 @@ export const CameraScanner = ({ onImageCapture }: CameraScannerProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { takePicture, pickFromGallery, isLoading } = useCamera();
+  const isNative = Capacitor.isNativePlatform();
 
   const startCamera = async () => {
+    // Use native camera on mobile
+    if (isNative) {
+      const imagePath = await takePicture();
+      if (imagePath) {
+        setPreview(imagePath);
+        onImageCapture(imagePath);
+        toast.success("Image captured! Analyzing plant...");
+      }
+      return;
+    }
+
+    // Use web camera on desktop
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: "environment" },
@@ -56,8 +72,20 @@ export const CameraScanner = ({ onImageCapture }: CameraScannerProps) => {
     }
   };
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+  const handleFileUpload = async (event?: React.ChangeEvent<HTMLInputElement>) => {
+    // Use native gallery on mobile
+    if (isNative && !event) {
+      const imagePath = await pickFromGallery();
+      if (imagePath) {
+        setPreview(imagePath);
+        onImageCapture(imagePath);
+        toast.success("Image uploaded! Analyzing plant...");
+      }
+      return;
+    }
+
+    // Use web file input on desktop
+    const file = event?.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -128,24 +156,31 @@ export const CameraScanner = ({ onImageCapture }: CameraScannerProps) => {
       <div className="p-6 flex gap-3">
         {!isScanning && !preview && (
           <>
-            <Button onClick={startCamera} className="flex-1">
+            <Button 
+              onClick={startCamera} 
+              className="flex-1"
+              disabled={isLoading}
+            >
               <Camera className="mr-2 h-4 w-4" />
-              Open Camera
+              {isLoading ? "Loading..." : "Open Camera"}
             </Button>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleFileUpload}
-            />
+            {!isNative && (
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleFileUpload}
+              />
+            )}
             <Button
               variant="secondary"
-              onClick={() => fileInputRef.current?.click()}
+              onClick={() => isNative ? handleFileUpload() : fileInputRef.current?.click()}
               className="flex-1"
+              disabled={isLoading}
             >
               <Upload className="mr-2 h-4 w-4" />
-              Upload Image
+              {isLoading ? "Loading..." : "Upload Image"}
             </Button>
           </>
         )}

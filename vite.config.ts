@@ -6,7 +6,7 @@ import path from "path";
 export default defineConfig(({ mode }) => ({
   server: {
     host: true,  // ✅ allows access from your phone via Wi-Fi
-    port: 8081,  // ✅ use consistent port
+    port: 8080,  // ✅ use consistent port
   },
   plugins: [react()],  
   resolve: {
