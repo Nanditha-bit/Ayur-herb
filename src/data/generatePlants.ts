@@ -2,6 +2,26 @@
 // WARNING: This data is AI-generated for UI/UX testing only and should NOT be used for medical purposes
 
 import { Plant } from "./plantsData";
+import herb1 from "@/assets/plants/herb-1.jpg";
+import tree1 from "@/assets/plants/tree-1.jpg";
+import shrub1 from "@/assets/plants/shrub-1.jpg";
+import climber1 from "@/assets/plants/climber-1.jpg";
+import rootPlant1 from "@/assets/plants/root-plant-1.jpg";
+import herb2 from "@/assets/plants/herb-2.jpg";
+import herb3 from "@/assets/plants/herb-3.jpg";
+import tropical1 from "@/assets/plants/tropical-1.jpg";
+import berryPlant1 from "@/assets/plants/berry-plant-1.jpg";
+import grass1 from "@/assets/plants/grass-1.jpg";
+import flower1 from "@/assets/plants/flower-1.jpg";
+import succulent1 from "@/assets/plants/succulent-1.jpg";
+import flower2 from "@/assets/plants/flower-2.jpg";
+import shrub2 from "@/assets/plants/shrub-2.jpg";
+import needleLeaf1 from "@/assets/plants/needle-leaf-1.jpg";
+import flower3 from "@/assets/plants/flower-3.jpg";
+import reed1 from "@/assets/plants/reed-1.jpg";
+import flower4 from "@/assets/plants/flower-4.jpg";
+import silveryPlant1 from "@/assets/plants/silvery-plant-1.jpg";
+import bark1 from "@/assets/plants/bark-1.jpg";
 
 const commonRasas = ["Madhura (Sweet)", "Amla (Sour)", "Lavana (Salty)", "Katu (Pungent)", "Tikta (Bitter)", "Kashaya (Astringent)"];
 const commonGunas = ["Laghu (Light)", "Guru (Heavy)", "Ruksha (Dry)", "Snigdha (Unctuous)", "Sheeta (Cold)", "Ushna (Hot)", "Tikshna (Sharp)", "Manda (Mild)"];
@@ -10,6 +30,13 @@ const commonVipakas = ["Madhura (Sweet)", "Amla (Sour)", "Katu (Pungent)"];
 const commonFamilies = ["Fabaceae", "Rutaceae", "Zingiberaceae", "Apiaceae", "Lamiaceae", "Asteraceae", "Solanaceae", "Meliaceae", "Euphorbiaceae", "Cucurbitaceae"];
 const commonHabits = ["Herb", "Shrub", "Tree", "Climber", "Creeper"];
 const commonUsefulParts = ["Root", "Leaves", "Bark", "Seeds", "Whole plant", "Flowers", "Fruits", "Stem"];
+
+// Array of botanical images to use for generated plants
+const plantImages = [
+  herb1, tree1, shrub1, climber1, rootPlant1, herb2, herb3, tropical1, 
+  berryPlant1, grass1, flower1, succulent1, flower2, shrub2, needleLeaf1,
+  flower3, reed1, flower4, silveryPlant1, bark1
+];
 
 const therapeuticCategories = [
   "Digestive Health", "Respiratory Issues", "Skin Diseases", "Fever", "Pain Relief",
@@ -84,7 +111,7 @@ function generatePlant(index: number): Plant {
   
   return {
     id: `plant-${plantNumber}`,
-    imageUrl: `https://images.unsplash.com/photo-${1500000000000 + index}?auto=format&fit=crop&w=800&q=80`,
+    imageUrl: plantImages[index % plantImages.length],
     sanskritName: `${sanskritName}`,
     synonyms: [
       { name: `Synonym1-${plantNumber}`, meaning: `Descriptive meaning for plant ${plantNumber}` },
