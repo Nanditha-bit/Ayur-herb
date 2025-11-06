@@ -4,26 +4,37 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Leaf, BookOpen, Beaker, Pill, AlertCircle } from "lucide-react";
+import { Leaf, BookOpen, Beaker, Pill, AlertCircle, Maximize2 } from "lucide-react";
+import { ImageLightbox } from "./ImageLightbox";
+import { useState } from "react";
 
 interface PlantDetailsProps {
   plant: Plant;
 }
 
 export const PlantDetails = ({ plant }: PlantDetailsProps) => {
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+
   return (
-    <ScrollArea className="h-[calc(100vh-200px)]">
-      <div className="space-y-6 p-6">
-        {/* Plant Image */}
-        {plant.imageUrl && (
-          <div className="w-full h-64 rounded-lg overflow-hidden">
-            <img
-              src={plant.imageUrl}
-              alt={plant.sanskritName}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        )}
+    <>
+      <ScrollArea className="h-[calc(100vh-200px)]">
+        <div className="space-y-6 p-6">
+          {/* Plant Image */}
+          {plant.imageUrl && (
+            <div 
+              className="w-full h-64 rounded-lg overflow-hidden relative group cursor-pointer"
+              onClick={() => setLightboxOpen(true)}
+            >
+              <img
+                src={plant.imageUrl}
+                alt={plant.sanskritName}
+                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <Maximize2 className="h-12 w-12 text-white" />
+              </div>
+            </div>
+          )}
         
         {/* Header Section */}
         <div className="space-y-4">
@@ -447,5 +458,15 @@ export const PlantDetails = ({ plant }: PlantDetailsProps) => {
         </Tabs>
       </div>
     </ScrollArea>
+
+    {plant.imageUrl && (
+      <ImageLightbox
+        imageUrl={plant.imageUrl}
+        alt={plant.sanskritName}
+        isOpen={lightboxOpen}
+        onClose={() => setLightboxOpen(false)}
+      />
+    )}
+    </>
   );
 };

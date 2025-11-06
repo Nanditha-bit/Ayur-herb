@@ -1,6 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Leaf } from "lucide-react";
+import { Leaf, Maximize2 } from "lucide-react";
+import { ImageLightbox } from "./ImageLightbox";
+import { useState } from "react";
 
 interface PlantCardProps {
   plant: {
@@ -16,20 +18,34 @@ interface PlantCardProps {
 }
 
 export const PlantCard = ({ plant, onClick }: PlantCardProps) => {
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+
+  const handleImageClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setLightboxOpen(true);
+  };
+
   return (
-    <Card
-      className="cursor-pointer hover:shadow-medium transition-all duration-300 hover:-translate-y-1 overflow-hidden"
-      onClick={onClick}
-    >
-      {plant.imageUrl && (
-        <div className="w-full h-48 overflow-hidden">
-          <img
-            src={plant.imageUrl}
-            alt={plant.sanskritName}
-            className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
-          />
-        </div>
-      )}
+    <>
+      <Card
+        className="cursor-pointer hover:shadow-medium transition-all duration-300 hover:-translate-y-1 overflow-hidden"
+        onClick={onClick}
+      >
+        {plant.imageUrl && (
+          <div 
+            className="w-full h-48 overflow-hidden relative group"
+            onClick={handleImageClick}
+          >
+            <img
+              src={plant.imageUrl}
+              alt={plant.sanskritName}
+              className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+            />
+            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <Maximize2 className="h-8 w-8 text-white" />
+            </div>
+          </div>
+        )}
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex-1">
@@ -64,5 +80,15 @@ export const PlantCard = ({ plant, onClick }: PlantCardProps) => {
         </div>
       </CardContent>
     </Card>
+
+    {plant.imageUrl && (
+      <ImageLightbox
+        imageUrl={plant.imageUrl}
+        alt={plant.sanskritName}
+        isOpen={lightboxOpen}
+        onClose={() => setLightboxOpen(false)}
+      />
+    )}
+    </>
   );
 };
