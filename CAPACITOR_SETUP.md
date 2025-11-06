@@ -1,17 +1,17 @@
-# 📱 Capacitor Native Mobile App Setup Guide
+﻿# ðŸ“± Capacitor Native Mobile App Setup Guide
 
 This guide will help you build and run your Ayur-Herb app as a native mobile application on Android and iOS devices.
 
-## 🎯 What You Get
+## ðŸŽ¯ What You Get
 
 With Capacitor enabled, your app now has:
-- ✅ **Native Camera Access** - Full device camera integration
-- ✅ **Push Notifications** - Send alerts to users
-- ✅ **Gallery Access** - Pick images from device storage
-- ✅ **Offline Support** - Works without internet
-- ✅ **Native Performance** - Optimized for mobile devices
+- âœ… **Native Camera Access** - Full device camera integration
+- âœ… **Push Notifications** - Send alerts to users
+- âœ… **Gallery Access** - Pick images from device storage
+- âœ… **Offline Support** - Works without internet
+- âœ… **Native Performance** - Optimized for mobile devices
 
-## 📋 Prerequisites
+## ðŸ“‹ Prerequisites
 
 ### For Android Development:
 - [Android Studio](https://developer.android.com/studio) installed
@@ -21,11 +21,11 @@ With Capacitor enabled, your app now has:
 - [Xcode](https://developer.apple.com/xcode/) installed (Mac required)
 - CocoaPods installed: `sudo gem install cocoapods`
 
-## 🚀 Step-by-Step Setup
+## ðŸš€ Step-by-Step Setup
 
 ### 1. Export Your Project to GitHub
 
-1. Click the **GitHub button** in the top right corner of Lovable
+1. Click the **GitHub button** in the top right corner of 
 2. Follow the prompts to export your project to a new or existing GitHub repository
 
 ### 2. Clone Your Project Locally
@@ -44,7 +44,7 @@ npm install
 ### 4. Initialize Capacitor (Already Done!)
 
 The Capacitor configuration is already set up in `capacitor.config.ts` with:
-- App ID: `app.lovable.3ffa6a210b104a7293dea916930cbc01`
+- App ID: `app..3ffa6a210b104a7293dea916930cbc01`
 - App Name: `plant-gyan-offline`
 - Hot-reload enabled for fast development
 
@@ -121,7 +121,7 @@ Then in Xcode:
 1. Select your target device or simulator
 2. Click the Play button to build and run
 
-## 🔄 Development Workflow
+## ðŸ”„ Development Workflow
 
 While developing, you can use hot-reload:
 
@@ -134,14 +134,14 @@ While developing, you can use hot-reload:
 
 3. When ready to test new changes on device:
    \`\`\`bash
-   git pull  # Pull latest changes from Lovable
+   git pull  # Pull latest changes from 
    npm install  # Install any new dependencies
    npm run build  # Build the web app
    npx cap sync  # Sync to native platforms
    npx cap run android  # or iOS
    \`\`\`
 
-## 📱 Testing Camera & Notifications
+## ðŸ“± Testing Camera & Notifications
 
 The app includes:
 - **Camera Hook** (`src/hooks/useCamera.ts`) - Take photos or pick from gallery
@@ -149,7 +149,7 @@ The app includes:
 
 The CameraScanner component automatically uses native camera on mobile and web camera on desktop!
 
-## 🚢 Publishing Your App
+## ðŸš¢ Publishing Your App
 
 ### Android (Google Play Store)
 1. Generate a signed APK/Bundle in Android Studio
@@ -165,7 +165,7 @@ The CameraScanner component automatically uses native camera on mobile and web c
 4. Fill in app information
 5. Submit for review
 
-## 🔧 Troubleshooting
+## ðŸ”§ Troubleshooting
 
 **Issue:** Camera not working on device
 - **Solution:** Check that permissions are added to manifest files and granted on device
@@ -179,12 +179,14 @@ The CameraScanner component automatically uses native camera on mobile and web c
 **Issue:** Changes not showing up
 - **Solution:** Always run `npx cap sync` after making code changes
 
-## 📚 Learn More
+## ðŸ“š Learn More
 
 - [Capacitor Documentation](https://capacitorjs.com/docs)
 - [Camera Plugin](https://capacitorjs.com/docs/apis/camera)
 - [Push Notifications Plugin](https://capacitorjs.com/docs/apis/push-notifications)
 
-## 🎉 You're All Set!
+## ðŸŽ‰ You're All Set!
 
-Your Ayur-Herb app is now a native mobile application with full access to device features. Happy coding! 🌿
+Your Ayur-Herb app is now a native mobile application with full access to device features. Happy coding! ðŸŒ¿
+
+
