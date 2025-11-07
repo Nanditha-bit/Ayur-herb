@@ -1,0 +1,4 @@
+project_id = "grslcmyegdixkkaurien"
+
+[functions.identify-plant]
+verify_jwt = false

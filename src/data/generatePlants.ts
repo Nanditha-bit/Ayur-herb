@@ -109,13 +109,29 @@ function generatePlant(index: number): Plant {
   const sanskritName = sanskritPrefixes[index % sanskritPrefixes.length] + 
                       (Math.random() > 0.7 ? sanskritSuffixes[Math.floor(Math.random() * sanskritSuffixes.length)] : "");
   
+  // Generate meaningful Sanskrit synonyms
+  const synonymPrefixes = ["Deva", "Raja", "Maha", "Su", "Pra", "Vishwa", "Sarva"];
+  const synonymBases = ["aushadhi", "vriksha", "gulma", "lata", "oushadha", "dravya"];
+  const synonymMeanings = [
+    "Resembles sacred properties",
+    "King among medicinal plants",
+    "Great healing herb",
+    "Auspicious plant",
+    "Universal remedy",
+    "Complete medicinal substance"
+  ];
+  
+  const synonym1 = synonymPrefixes[index % synonymPrefixes.length] + synonymBases[Math.floor(Math.random() * synonymBases.length)];
+  const synonym2 = sanskritPrefixes[(index + 3) % sanskritPrefixes.length] + "vriksha";
+  
   return {
     id: `plant-${plantNumber}`,
     imageUrl: plantImages[index % plantImages.length],
     sanskritName: `${sanskritName}`,
     synonyms: [
-      { name: `Synonym1-${plantNumber}`, meaning: `Descriptive meaning for plant ${plantNumber}` },
-      { name: `Synonym2-${plantNumber}`, meaning: `Alternative name describing properties` },
+      { name: synonym1, meaning: synonymMeanings[index % synonymMeanings.length] },
+      { name: synonym2, meaning: `Alternative name for ${sanskritName}` },
+      { name: `${sanskritName}mula`, meaning: `Root-based reference to ${sanskritName}` },
     ],
     botanicalName: `Plantus medicinalis var. ${baseName.toLowerCase()}`,
     family: family,

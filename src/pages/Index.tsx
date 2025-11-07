@@ -23,16 +23,50 @@ const Index = () => {
   const totalPlants = getTotalPlantCount();
   const verifiedPlants = getVerifiedPlantCount();
 
-  const handleImageCapture = (imageData: string) => {
-    // In production, this would call an ML model API to identify the plant
-    // For now, we'll simulate identification after a delay
-    setTimeout(() => {
-      const randomPlant = allPlantsDatabase[Math.floor(Math.random() * allPlantsDatabase.length)];
-      setSelectedPlant(randomPlant);
+  const handleImageCapture = async (imageData: string) => {
+    try {
+      toast.info("Analyzing plant with AI...");
+      
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/identify-plant`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify({ imageData }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to identify plant');
+      }
+
+      const { identification } = await response.json();
+      
+      // Search for matching plant in database
+      const matchingPlant = allPlantsDatabase.find(plant => 
+        plant.sanskritName.toLowerCase().includes(identification.sanskritName.toLowerCase()) ||
+        plant.botanicalName.toLowerCase().includes(identification.botanicalName.toLowerCase())
+      );
+
+      if (matchingPlant) {
+        setSelectedPlant(matchingPlant);
+        toast.success(`Plant identified: ${matchingPlant.sanskritName}`);
+      } else {
+        // Show AI identification result even if not in database
+        toast.success(`Identified as: ${identification.sanskritName} (${identification.botanicalName})`);
+        toast.info(`Confidence: ${identification.confidence}. This plant is not in our database yet.`);
+      }
+      
       setShowScanner(false);
       setShowDetails(true);
-      toast.success(`Plant identified: ${randomPlant.sanskritName}`);
-    }, 2000);
+    } catch (error) {
+      console.error('Plant identification error:', error);
+      toast.error(error instanceof Error ? error.message : 'Failed to identify plant. Please try again.');
+    }
   };
 
   const handlePlantClick = (plant: Plant) => {
