@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { allPlantsDatabase, searchPlants, Plant, getTotalPlantCount, getVerifiedPlantCount } from "@/data/plantsData";
-import { Leaf, Search, BookOpen, Info } from "lucide-react";
+import { Leaf, Search, BookOpen, Info, Upload } from "lucide-react";
 import heroImage from "@/assets/hero-botanical.jpg";
 import { toast } from "sonner";
 
@@ -114,6 +114,15 @@ const Index = () => {
               Browse Database
             </Button>
           </div>
+          
+          <Button
+            variant="ghost"
+            className="mt-4 text-primary-foreground/90 hover:text-primary-foreground hover:bg-white/10"
+            onClick={() => window.location.href = "/import"}
+          >
+            <Upload className="mr-2 h-4 w-4" />
+            Import Verified Data
+          </Button>
         </div>
       </section>
 

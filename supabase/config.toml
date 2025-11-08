@@ -2,3 +2,6 @@ project_id = "grslcmyegdixkkaurien"
 
 [functions.identify-plant]
 verify_jwt = false
+
+[functions.process-plant-import]
+verify_jwt = false
