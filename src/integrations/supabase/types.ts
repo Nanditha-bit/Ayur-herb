@@ -14,7 +14,141 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      plant_import_logs: {
+        Row: {
+          created_at: string | null
+          failed_imports: number | null
+          file_name: string
+          file_type: string
+          id: string
+          import_status: string | null
+          successful_imports: number | null
+          total_records: number | null
+          user_id: string | null
+          validation_errors: Json | null
+        }
+        Insert: {
+          created_at?: string | null
+          failed_imports?: number | null
+          file_name: string
+          file_type: string
+          id?: string
+          import_status?: string | null
+          successful_imports?: number | null
+          total_records?: number | null
+          user_id?: string | null
+          validation_errors?: Json | null
+        }
+        Update: {
+          created_at?: string | null
+          failed_imports?: number | null
+          file_name?: string
+          file_type?: string
+          id?: string
+          import_status?: string | null
+          successful_imports?: number | null
+          total_records?: number | null
+          user_id?: string | null
+          validation_errors?: Json | null
+        }
+        Relationships: []
+      }
+      verified_plants: {
+        Row: {
+          botanical_name: string
+          botanical_synonyms: string[] | null
+          chemical_constituents: string[] | null
+          classification: Json | null
+          common_name: string
+          created_at: string | null
+          data_source: string | null
+          dosage: string | null
+          dosha_karma: Json | null
+          family: string
+          formulations: string[] | null
+          id: string
+          image_url: string | null
+          indications: string[] | null
+          is_verified: boolean | null
+          karma: string[] | null
+          modern_pharmacology: string[] | null
+          morphology: Json | null
+          plant_id: string
+          rasapanchaka: Json | null
+          sanskrit_name: string
+          sanskrit_synonyms: Json | null
+          source_references: string[] | null
+          therapeutic_uses: string[] | null
+          updated_at: string | null
+          useful_parts: string[] | null
+          verification_date: string | null
+          verified_by: string | null
+          vernacular_names: Json | null
+        }
+        Insert: {
+          botanical_name: string
+          botanical_synonyms?: string[] | null
+          chemical_constituents?: string[] | null
+          classification?: Json | null
+          common_name: string
+          created_at?: string | null
+          data_source?: string | null
+          dosage?: string | null
+          dosha_karma?: Json | null
+          family: string
+          formulations?: string[] | null
+          id?: string
+          image_url?: string | null
+          indications?: string[] | null
+          is_verified?: boolean | null
+          karma?: string[] | null
+          modern_pharmacology?: string[] | null
+          morphology?: Json | null
+          plant_id: string
+          rasapanchaka?: Json | null
+          sanskrit_name: string
+          sanskrit_synonyms?: Json | null
+          source_references?: string[] | null
+          therapeutic_uses?: string[] | null
+          updated_at?: string | null
+          useful_parts?: string[] | null
+          verification_date?: string | null
+          verified_by?: string | null
+          vernacular_names?: Json | null
+        }
+        Update: {
+          botanical_name?: string
+          botanical_synonyms?: string[] | null
+          chemical_constituents?: string[] | null
+          classification?: Json | null
+          common_name?: string
+          created_at?: string | null
+          data_source?: string | null
+          dosage?: string | null
+          dosha_karma?: Json | null
+          family?: string
+          formulations?: string[] | null
+          id?: string
+          image_url?: string | null
+          indications?: string[] | null
+          is_verified?: boolean | null
+          karma?: string[] | null
+          modern_pharmacology?: string[] | null
+          morphology?: Json | null
+          plant_id?: string
+          rasapanchaka?: Json | null
+          sanskrit_name?: string
+          sanskrit_synonyms?: Json | null
+          source_references?: string[] | null
+          therapeutic_uses?: string[] | null
+          updated_at?: string | null
+          useful_parts?: string[] | null
+          verification_date?: string | null
+          verified_by?: string | null
+          vernacular_names?: Json | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
