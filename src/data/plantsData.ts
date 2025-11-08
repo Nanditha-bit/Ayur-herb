@@ -485,4 +485,4 @@ export const getPlantById = (id: string): Plant | undefined => {
 
 // Get total count
 export const getTotalPlantCount = () => allPlantsDatabase.length;
-export const getVerifiedPlantCount = () => plantsDatabase.length;
+export const getVerifiedPlantCount = () => allPlantsDatabase.length;

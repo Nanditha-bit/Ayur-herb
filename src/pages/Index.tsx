@@ -228,9 +228,14 @@ const Index = () => {
           <div className="bg-destructive/20 border border-destructive/50 rounded-lg p-4 max-w-3xl mx-auto">
             <p className="text-sm font-semibold mb-2">⚠️ IMPORTANT DISCLAIMER</p>
             <p className="text-xs">
-              This database contains {verifiedPlants} verified Ayurvedic plants and {totalPlants - verifiedPlants} AI-generated 
-              placeholder entries for testing purposes only. Plants beyond the first 3 have NOT been medically verified.
-              DO NOT use this information for medical treatment without consulting a qualified Ayurvedic practitioner.
+              {verifiedPlants === totalPlants ? (
+                <>All {totalPlants} plants in this database are marked as verified.</>
+              ) : (
+                <>
+                  This database contains {verifiedPlants} verified Ayurvedic plants and {totalPlants - verifiedPlants} AI-generated 
+                  placeholder entries for testing purposes only. Plants beyond the first {verifiedPlants} have NOT been medically verified.
+                </>
+              )} DO NOT use this information for medical treatment without consulting a qualified Ayurvedic practitioner.
             </p>
           </div>
           <p className="text-sm">
