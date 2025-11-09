@@ -6,15 +6,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { allPlantsDatabase, searchPlants, Plant, getTotalPlantCount, getVerifiedPlantCount } from "@/data/plantsData";
-import { Leaf, Search, BookOpen, Info, Upload } from "lucide-react";
+import { Leaf, Search, BookOpen, Info, Upload, History } from "lucide-react";
 import heroImage from "@/assets/hero-botanical.jpg";
 import { toast } from "sonner";
+import { useOfflineStorage } from "@/hooks/useOfflineStorage";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPlant, setSelectedPlant] = useState<Plant | null>(null);
   const [showDetails, setShowDetails] = useState(false);
   const [showScanner, setShowScanner] = useState(false);
+  const { savePlant } = useOfflineStorage();
 
   const filteredPlants = searchQuery
     ? searchPlants(searchQuery)
@@ -51,6 +53,15 @@ const Index = () => {
         plant.sanskritName.toLowerCase().includes(identification.sanskritName.toLowerCase()) ||
         plant.botanicalName.toLowerCase().includes(identification.botanicalName.toLowerCase())
       );
+
+      // Save to IndexedDB for offline access
+      await savePlant({
+        plantId: matchingPlant?.id,
+        sanskritName: identification.sanskritName,
+        botanicalName: identification.botanicalName,
+        confidence: identification.confidence,
+        imageData: imageData,
+      });
 
       if (matchingPlant) {
         setSelectedPlant(matchingPlant);
@@ -115,14 +126,22 @@ const Index = () => {
             </Button>
           </div>
           
-          <div className="flex gap-3 mt-4">
+          <div className="flex flex-wrap gap-3 mt-4 justify-center">
+            <Button
+              variant="ghost"
+              className="text-primary-foreground/90 hover:text-primary-foreground hover:bg-white/10"
+              onClick={() => window.location.href = "/history"}
+            >
+              <History className="mr-2 h-4 w-4" />
+              History
+            </Button>
             <Button
               variant="ghost"
               className="text-primary-foreground/90 hover:text-primary-foreground hover:bg-white/10"
               onClick={() => window.location.href = "/glossary"}
             >
               <BookOpen className="mr-2 h-4 w-4" />
-              Ayurvedic Glossary
+              Glossary
             </Button>
             <Button
               variant="ghost"
@@ -130,7 +149,7 @@ const Index = () => {
               onClick={() => window.location.href = "/import"}
             >
               <Upload className="mr-2 h-4 w-4" />
-              Import Verified Data
+              Import Data
             </Button>
           </div>
         </div>
