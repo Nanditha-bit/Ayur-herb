@@ -20,96 +20,25 @@ serve(async (req) => {
       );
     }
 
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY is not configured');
-    }
+    console.log('Analyzing plant image with AI model...');
 
-    console.log('Analyzing plant image with Lovable AI...');
+    // Placeholder for AI or image analysis logic
+    // Replace this with your preferred AI API integration
+    // Example: call your backend ML service, Gemini API, or Hugging Face model here
 
-    // Call Lovable AI with vision capabilities
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          {
-            role: 'system',
-            content: `You are an Ayurvedic plant identification expert. Analyze plant images and identify them based on their botanical features. 
-Return ONLY a JSON object (no markdown, no code blocks) with this exact structure:
-{
-  "confidence": "high/medium/low",
-  "sanskritName": "Sanskrit name",
-  "botanicalName": "Botanical name",
-  "commonName": "Common English name",
-  "family": "Plant family",
-  "keyFeatures": ["feature1", "feature2"],
-  "possibleMatches": ["plant1", "plant2"]
-}`
-          },
-          {
-            role: 'user',
-            content: [
-              {
-                type: 'text',
-                text: 'Identify this plant based on Ayurvedic and botanical knowledge. Provide the Sanskrit name, botanical name, family, and key identifying features.'
-              },
-              {
-                type: 'image_url',
-                image_url: {
-                  url: imageData
-                }
-              }
-            ]
-          }
-        ],
-        temperature: 0.3,
-        max_tokens: 500
-      }),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Lovable AI error:', response.status, errorText);
-      
-      if (response.status === 429) {
-        return new Response(
-          JSON.stringify({ error: 'Rate limit exceeded. Please try again later.' }), 
-          { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-      if (response.status === 402) {
-        return new Response(
-          JSON.stringify({ error: 'AI credits exhausted. Please add credits to continue.' }), 
-          { status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-      
-      throw new Error(`AI Gateway error: ${response.status} ${errorText}`);
-    }
-
-    const data = await response.json();
-    console.log('AI Response:', data);
-    
-    const content = data.choices?.[0]?.message?.content;
-    if (!content) {
-      throw new Error('No response from AI model');
-    }
-
-    // Parse the JSON response, handling potential markdown code blocks
-    let identificationResult;
-    try {
-      // Remove markdown code blocks if present
-      const cleanContent = content.replace(/```json\n?|\n?```/g, '').trim();
-      identificationResult = JSON.parse(cleanContent);
-    } catch (parseError) {
-      console.error('Failed to parse AI response:', content);
-      throw new Error('Invalid AI response format');
-    }
+    const identificationResult = {
+      confidence: "medium",
+      sanskritName: "Tulasi",
+      botanicalName: "Ocimum tenuiflorum",
+      commonName: "Holy Basil",
+      family: "Lamiaceae",
+      keyFeatures: [
+        "Green or purple aromatic leaves",
+        "Opposite leaf arrangement",
+        "Square stem typical of mint family"
+      ],
+      possibleMatches: ["Ocimum sanctum", "Ocimum gratissimum"]
+    };
 
     console.log('Plant identified:', identificationResult);
 
