@@ -36,17 +36,17 @@ export const PlantDetails = ({ plant }: PlantDetailsProps) => {
             </div>
           )}
         
-        {/* Header Section */}
+        {/* Header Section - Sanskrit Name Only */}
         <div className="space-y-4">
           <div className="flex items-start justify-between">
-            <div className="space-y-2">
-              <h1 className="text-3xl font-bold text-primary">
+            <div className="space-y-3">
+              <h1 className="text-4xl font-bold text-primary">
                 {plant.sanskritName}
               </h1>
-              <p className="text-xl italic text-muted-foreground">
+              <p className="text-lg italic text-muted-foreground">
                 {plant.botanicalName}
               </p>
-              <p className="text-lg">{plant.vernacularName}</p>
+              <p className="text-base text-muted-foreground">{plant.vernacularName}</p>
             </div>
             <Leaf className="h-12 w-12 text-accent" />
           </div>

@@ -103,11 +103,15 @@ function generatePlant(index: number): Plant {
     .sort(() => Math.random() - 0.5)
     .slice(0, numParts);
   
-  // Generate Sanskrit name (simplified)
-  const sanskritPrefixes = ["Amalaki", "Haritaki", "Bibhitaki", "Shatavari", "Brahmi", "Guduchi", "Punarnava", "Bala", "Arjuna", "Kutki"];
-  const sanskritSuffixes = ["valli", "patra", "mula", "pushpa", "phala", "vrksha"];
-  const sanskritName = sanskritPrefixes[index % sanskritPrefixes.length] + 
-                      (Math.random() > 0.7 ? sanskritSuffixes[Math.floor(Math.random() * sanskritSuffixes.length)] : "");
+  // Generate unique Sanskrit name
+  const sanskritPrefixes = ["Amalaki", "Haritaki", "Bibhitaki", "Shatavari", "Brahmi", "Guduchi", "Punarnava", "Bala", "Arjuna", "Kutki", "Ashoka", "Jambu", "Khadira", "Palasha", "Shala", "Pippali", "Maricha", "Shunthi", "Ela", "Twak"];
+  const sanskritSuffixes = ["valli", "patra", "mula", "pushpa", "phala", "vrksha", "lata", "kanda", "shaka", "beeja"];
+  const sanskritMiddle = ["", "maha", "su", "deva", "raja"];
+  const uniqueId = Math.floor(index / sanskritPrefixes.length) + 1;
+  const prefix = sanskritPrefixes[index % sanskritPrefixes.length];
+  const middle = sanskritMiddle[Math.floor(index / 20) % sanskritMiddle.length];
+  const suffix = index % 3 === 0 ? sanskritSuffixes[index % sanskritSuffixes.length] : "";
+  const sanskritName = middle ? `${middle}${prefix}${suffix}` : `${prefix}${suffix}${uniqueId > 1 ? ` ${uniqueId}` : ""}`;
   
   // Generate meaningful Sanskrit synonyms
   const synonymPrefixes = ["Deva", "Raja", "Maha", "Su", "Pra", "Vishwa", "Sarva"];
@@ -204,5 +208,5 @@ function generatePlant(index: number): Plant {
   };
 }
 
-// Generate 1000 plants
-export const generatedPlants: Plant[] = Array.from({ length: 1000 }, (_, i) => generatePlant(i));
+// Generate 100 unique plants (reduced from 1000 to avoid repetition)
+export const generatedPlants: Plant[] = Array.from({ length: 100 }, (_, i) => generatePlant(i));

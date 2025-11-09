@@ -20,7 +20,7 @@ export const CameraScanner = ({ onImageCapture }: CameraScannerProps) => {
   const isNative = Capacitor.isNativePlatform();
 
   const startCamera = async () => {
-    // Use native camera on mobile
+    // Use native camera on mobile apps
     if (isNative) {
       const imagePath = await takePicture();
       if (imagePath) {
@@ -31,19 +31,38 @@ export const CameraScanner = ({ onImageCapture }: CameraScannerProps) => {
       return;
     }
 
-    // Use web camera on desktop
+    // Use web camera on desktop/mobile browsers
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "environment" },
-      });
+      // Check if getUserMedia is supported
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        toast.error("Camera not supported on this device. Please upload an image instead.");
+        return;
+      }
+
+      const constraints = {
+        video: { 
+          facingMode: { ideal: "environment" },
+          width: { ideal: 1280 },
+          height: { ideal: 720 }
+        },
+      };
+
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
       streamRef.current = stream;
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
+        await videoRef.current.play();
         setIsScanning(true);
       }
-    } catch (error) {
-      toast.error("Unable to access camera. Please check permissions.");
+    } catch (error: any) {
       console.error("Camera error:", error);
+      if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
+        toast.error("Camera permission denied. Please allow camera access or upload an image.");
+      } else if (error.name === 'NotFoundError' || error.name === 'DevicesNotFoundError') {
+        toast.error("No camera found. Please upload an image instead.");
+      } else {
+        toast.error("Unable to access camera. Please try uploading an image.");
+      }
     }
   };
 

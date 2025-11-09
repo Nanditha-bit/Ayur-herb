@@ -49,7 +49,7 @@ export const PlantCard = ({ plant, onClick }: PlantCardProps) => {
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <CardTitle className="text-lg text-primary mb-1">
+            <CardTitle className="text-xl text-primary mb-2 font-bold">
               {plant.sanskritName}
             </CardTitle>
             <p className="text-sm text-muted-foreground italic">
