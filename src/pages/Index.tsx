@@ -115,14 +115,24 @@ const Index = () => {
             </Button>
           </div>
           
-          <Button
-            variant="ghost"
-            className="mt-4 text-primary-foreground/90 hover:text-primary-foreground hover:bg-white/10"
-            onClick={() => window.location.href = "/import"}
-          >
-            <Upload className="mr-2 h-4 w-4" />
-            Import Verified Data
-          </Button>
+          <div className="flex gap-3 mt-4">
+            <Button
+              variant="ghost"
+              className="text-primary-foreground/90 hover:text-primary-foreground hover:bg-white/10"
+              onClick={() => window.location.href = "/glossary"}
+            >
+              <BookOpen className="mr-2 h-4 w-4" />
+              Ayurvedic Glossary
+            </Button>
+            <Button
+              variant="ghost"
+              className="text-primary-foreground/90 hover:text-primary-foreground hover:bg-white/10"
+              onClick={() => window.location.href = "/import"}
+            >
+              <Upload className="mr-2 h-4 w-4" />
+              Import Verified Data
+            </Button>
+          </div>
         </div>
       </section>
 
