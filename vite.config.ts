@@ -1,42 +1,19 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import { VitePWA } from 'vite-plugin-pwa'
-import path from 'path'
-import { componentTagger } from "lovable-tagger"
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-swc";
+import path from "path";
 
+// https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
   },
   plugins: [
-    react(),
-    mode === 'development' && componentTagger(),
-    VitePWA({
-      registerType: 'autoUpdate',
-      manifest: {
-        name: 'Plant Gyan',
-        short_name: 'PlantGyan',
-        description: 'Identify and explore Ayurvedic plants with ease.',
-        theme_color: '#4CAF50',
-        icons: [
-          {
-            src: '/icons/pwa-192x192.png',
-            sizes: '192x192',
-            type: 'image/png',
-          },
-          {
-            src: '/icons/pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-          },
-        ],
-      },
-    }),
-  ].filter(Boolean),
+    react(), // only the essential React plugin
+  ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      "@": path.resolve(__dirname, "./src"),
     },
   },
-}))
+}));
