@@ -68,8 +68,8 @@ export const CameraScanner = ({ onImageCapture }: CameraScannerProps) => {
       const constraints = {
         video: { 
           facingMode: { ideal: "environment" },
-          width: { ideal: 1280 },
-          height: { ideal: 720 }
+          width: { ideal: 1920 },
+          height: { ideal: 1080 }
         },
       };
 
@@ -79,6 +79,15 @@ export const CameraScanner = ({ onImageCapture }: CameraScannerProps) => {
         videoRef.current.srcObject = stream;
         await videoRef.current.play();
         setIsScanning(true);
+        
+        // Auto-enter fullscreen on mobile browsers
+        if (containerRef.current && window.innerWidth <= 768) {
+          try {
+            await containerRef.current.requestFullscreen();
+          } catch (error) {
+            console.log('Fullscreen not available:', error);
+          }
+        }
       }
     } catch (error: any) {
       console.error("Camera error:", error);
@@ -92,12 +101,21 @@ export const CameraScanner = ({ onImageCapture }: CameraScannerProps) => {
     }
   };
 
-  const stopCamera = () => {
+  const stopCamera = async () => {
     if (streamRef.current) {
       streamRef.current.getTracks().forEach((track) => track.stop());
       streamRef.current = null;
     }
     setIsScanning(false);
+    
+    // Exit fullscreen when stopping camera
+    if (isFullscreen && document.fullscreenElement) {
+      try {
+        await document.exitFullscreen();
+      } catch (error) {
+        console.log('Exit fullscreen error:', error);
+      }
+    }
   };
 
   const captureImage = () => {
@@ -151,9 +169,9 @@ export const CameraScanner = ({ onImageCapture }: CameraScannerProps) => {
   };
 
   return (
-    <div ref={containerRef} className={isFullscreen ? 'fixed inset-0 z-50 bg-background flex flex-col' : ''}>
-      <Card className={`overflow-hidden shadow-medium ${isFullscreen ? 'flex-1 flex flex-col border-0 rounded-none' : ''}`}>
-        <div className={`relative bg-muted touch-none ${isFullscreen ? 'flex-1' : ''}`}>
+    <div ref={containerRef} className={isFullscreen ? 'fixed inset-0 z-50 bg-black' : ''}>
+      <Card className={`overflow-hidden shadow-medium ${isFullscreen ? 'h-full flex flex-col border-0 rounded-none bg-black' : ''}`}>
+        <div className={`relative bg-muted touch-none ${isFullscreen ? 'flex-1 bg-black' : ''}`}>
           {preview ? (
             <div className="relative h-full">
               <img
@@ -196,11 +214,24 @@ export const CameraScanner = ({ onImageCapture }: CameraScannerProps) => {
               >
                 {isFullscreen ? <Minimize className="h-4 w-4" /> : <Maximize className="h-4 w-4" />}
               </Button>
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/80 to-transparent p-4 pointer-events-none">
-                <p className="text-center text-sm text-muted-foreground">
-                  Position plant within the frame
-                </p>
-              </div>
+              {/* Capture and Cancel buttons overlaid on video in fullscreen */}
+              {isFullscreen && (
+                <div className="absolute bottom-8 left-0 right-0 flex gap-4 px-6 z-20">
+                  <Button onClick={captureImage} className="flex-1" size="lg">
+                    Capture
+                  </Button>
+                  <Button variant="secondary" onClick={stopCamera} className="flex-1" size="lg">
+                    Cancel
+                  </Button>
+                </div>
+              )}
+              {!isFullscreen && (
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/80 to-transparent p-4 pointer-events-none">
+                  <p className="text-center text-sm text-muted-foreground">
+                    Position plant within the frame
+                  </p>
+                </div>
+              )}
             </div>
           ) : (
             <div className={`flex items-center justify-center ${isFullscreen ? 'h-full' : 'h-[400px]'}`}>
@@ -214,49 +245,52 @@ export const CameraScanner = ({ onImageCapture }: CameraScannerProps) => {
           )}
         </div>
 
-        <div className="p-4 sm:p-6 flex gap-3 bg-background">
-          {!isScanning && !preview && (
-            <>
-              <Button 
-                onClick={startCamera} 
-                className="flex-1"
-                disabled={isLoading}
-              >
-                <Camera className="mr-2 h-4 w-4" />
-                {isLoading ? "Loading..." : "Open Camera"}
-              </Button>
-              {!isNative && (
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  capture="environment"
-                  className="hidden"
-                  onChange={handleFileUpload}
-                />
-              )}
-              <Button
-                variant="secondary"
-                onClick={() => isNative ? handleFileUpload() : fileInputRef.current?.click()}
-                className="flex-1"
-                disabled={isLoading}
-              >
-                <Upload className="mr-2 h-4 w-4" />
-                {isLoading ? "Loading..." : "Upload Image"}
-              </Button>
-            </>
-          )}
-          {isScanning && (
-            <>
-              <Button onClick={captureImage} className="flex-1" size="lg">
-                Capture
-              </Button>
-              <Button variant="secondary" onClick={stopCamera} className="flex-1" size="lg">
-                Cancel
-              </Button>
-            </>
-          )}
-        </div>
+        {/* Show buttons in card footer only when NOT in fullscreen scanning mode */}
+        {(!isFullscreen || !isScanning) && (
+          <div className="p-4 sm:p-6 flex gap-3 bg-background">
+            {!isScanning && !preview && (
+              <>
+                <Button 
+                  onClick={startCamera} 
+                  className="flex-1"
+                  disabled={isLoading}
+                >
+                  <Camera className="mr-2 h-4 w-4" />
+                  {isLoading ? "Loading..." : "Open Camera"}
+                </Button>
+                {!isNative && (
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    capture="environment"
+                    className="hidden"
+                    onChange={handleFileUpload}
+                  />
+                )}
+                <Button
+                  variant="secondary"
+                  onClick={() => isNative ? handleFileUpload() : fileInputRef.current?.click()}
+                  className="flex-1"
+                  disabled={isLoading}
+                >
+                  <Upload className="mr-2 h-4 w-4" />
+                  {isLoading ? "Loading..." : "Upload Image"}
+                </Button>
+              </>
+            )}
+            {isScanning && !isFullscreen && (
+              <>
+                <Button onClick={captureImage} className="flex-1" size="lg">
+                  Capture
+                </Button>
+                <Button variant="secondary" onClick={stopCamera} className="flex-1" size="lg">
+                  Cancel
+                </Button>
+              </>
+            )}
+          </div>
+        )}
       </Card>
     </div>
   );
