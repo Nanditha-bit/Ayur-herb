@@ -126,38 +126,44 @@ export const CameraScanner = ({ onImageCapture }: CameraScannerProps) => {
 
   return (
     <Card className="overflow-hidden shadow-medium">
-      <div className="relative bg-muted">
+      <div className="relative bg-muted touch-none">
         {preview ? (
           <div className="relative">
             <img
               src={preview}
               alt="Captured plant"
-              className="w-full h-[400px] object-cover"
+              className="w-full h-[60vh] min-h-[300px] max-h-[600px] object-cover"
             />
             <Button
               variant="secondary"
               size="icon"
-              className="absolute top-4 right-4"
+              className="absolute top-4 right-4 z-10"
               onClick={clearPreview}
             >
               <X className="h-4 w-4" />
             </Button>
           </div>
         ) : isScanning ? (
-          <div className="relative">
+          <div className="relative h-[60vh] min-h-[300px] max-h-[600px] overflow-hidden">
             <video
               ref={videoRef}
               autoPlay
               playsInline
-              className="w-full h-[400px] object-cover"
+              muted
+              className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 border-4 border-primary/30 pointer-events-none">
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 border-2 border-accent">
-                <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-accent"></div>
-                <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-accent"></div>
-                <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-accent"></div>
-                <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-accent"></div>
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 sm:w-64 sm:h-64 border-2 border-accent">
+                <div className="absolute top-0 left-0 w-6 h-6 sm:w-8 sm:h-8 border-t-4 border-l-4 border-accent"></div>
+                <div className="absolute top-0 right-0 w-6 h-6 sm:w-8 sm:h-8 border-t-4 border-r-4 border-accent"></div>
+                <div className="absolute bottom-0 left-0 w-6 h-6 sm:w-8 sm:h-8 border-b-4 border-l-4 border-accent"></div>
+                <div className="absolute bottom-0 right-0 w-6 h-6 sm:w-8 sm:h-8 border-b-4 border-r-4 border-accent"></div>
               </div>
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/80 to-transparent p-4 pointer-events-none">
+              <p className="text-center text-sm text-muted-foreground">
+                Position plant within the frame
+              </p>
             </div>
           </div>
         ) : (
@@ -172,7 +178,7 @@ export const CameraScanner = ({ onImageCapture }: CameraScannerProps) => {
         )}
       </div>
 
-      <div className="p-6 flex gap-3">
+      <div className="p-4 sm:p-6 flex gap-3 bg-background">
         {!isScanning && !preview && (
           <>
             <Button 
@@ -188,6 +194,7 @@ export const CameraScanner = ({ onImageCapture }: CameraScannerProps) => {
                 ref={fileInputRef}
                 type="file"
                 accept="image/*"
+                capture="environment"
                 className="hidden"
                 onChange={handleFileUpload}
               />
@@ -205,10 +212,10 @@ export const CameraScanner = ({ onImageCapture }: CameraScannerProps) => {
         )}
         {isScanning && (
           <>
-            <Button onClick={captureImage} className="flex-1">
+            <Button onClick={captureImage} className="flex-1" size="lg">
               Capture
             </Button>
-            <Button variant="secondary" onClick={stopCamera} className="flex-1">
+            <Button variant="secondary" onClick={stopCamera} className="flex-1" size="lg">
               Cancel
             </Button>
           </>
